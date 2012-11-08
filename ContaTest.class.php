@@ -3,16 +3,25 @@ require_once 'Conta.class.php';
 
 class ContaTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	* @comments testa o método setAgencia como entrada 0470-9 com saida esperada true
+	*/
 	public function testsetAgencia(){
 		$conta = new Conta();
 		$this->assertEquals(true, $conta->setAgencia('0470-9'));
 	}
 
+	/**
+	* @comments testa o método setAgencia como entrada aaaa com saída esperada false
+	*/
 	public function testsetAgencia2(){		
 		$conta = new Conta();
 		$this->assertEquals(false, $conta->setAgencia('aaaa'));
 	}
 
+	/**
+	* @comments teste o método setAgencia com a entrada vazia e saída esperada false
+	*/
 	public function testsetAgencia3(){
 		$conta = new Conta();
 		$this->assertEquals(false, $conta->setAgencia(''));
@@ -22,6 +31,7 @@ class ContaTest extends PHPUnit_Framework_TestCase
 	* @depends testsetAgencia
 	* @depends testsetAgencia2
 	* @depends testsetAgencia3
+	* @comments teste do método getAgencia setando o valor 0470-9 e esperando a saída string
 	*/
 	public function testgetAgencia(){
 		$conta = new Conta();
@@ -47,7 +57,7 @@ class ContaTest extends PHPUnit_Framework_TestCase
 
 	public function testsetCodigo2(){
 		$conta = new Conta();
-		$this->assertEquals(false, $conta->setCodigo(ald3));	
+		$this->assertEquals(false, $conta->setCodigo('ald3'));	
 	}
 
 	/**
@@ -66,7 +76,7 @@ class ContaTest extends PHPUnit_Framework_TestCase
 	*/
 	public function testgetCodigo2(){
 		$conta = new Conta();
-		$conta->setCodigo(ee234);
+		$conta->setCodigo('ee234');
 		$this->assertEquals(null, $conta->getCodigo());
 	}
 
@@ -228,7 +238,7 @@ class ContaTest extends PHPUnit_Framework_TestCase
 
 	public function testsetSaldo7(){
 		$conta = new Conta();
-		$this->assertEquals(false, $conta->setSaldo(la));
+		$this->assertEquals(false, $conta->setSaldo('la'));
 	}
 
 	/**
@@ -243,7 +253,7 @@ class ContaTest extends PHPUnit_Framework_TestCase
 	public function testgetSaldo(){
 		$conta = new Conta();
 		$conta->setSaldo(4.6);
-		$this->assertInternalType(bool, $conta->getSaldo());
+		$this->assertEquals(null, $conta->getSaldo());
 	}
 
 	/**
@@ -257,36 +267,113 @@ class ContaTest extends PHPUnit_Framework_TestCase
 	*/
 	public function testgetSaldo2(){
 		$conta = new Conta();
-		$conta->setSaldo(4.60);
+		$conta->setSaldo(4.01);
 		$this->assertInternalType('float', $conta->getSaldo());
 	}
+
+    /**
+    * @depends testsetSaldo
+    * @depends testsetSaldo2
+    * @depends testsetSaldo3
+    * @depends testsetSaldo4
+    * @depends testsetSaldo5
+    * @depends testsetSaldo6
+    * @depends testsetSaldo7
+    */
+    public function testgetSaldo3(){
+        $conta = new Conta();
+        $conta->setSaldo(.01);
+        $this->assertEquals(null, $conta->getSaldo());
+    }
 
 	public function testsetCancelada(){
 		$conta = new Conta();
 		$this->assertEquals(true, $conta->setCancelada(true));
 	}
 
+    public function testsetCancelada2(){
+        $conta = new Conta();
+        $this->assertEquals(false, $conta->setCancelada(1));
+    }
+
+    public function testsetCancelada3(){
+        $conta = new Conta();
+        $this->assertEquals(false, $conta->setCancelada('t'));
+    }
+
+    public function testsetCancelada4(){
+        $conta = new Conta();
+        $this->assertEquals(false, $conta->setCancelada(''));
+    }
+
+    public function testsetCancelada5(){
+        $conta = new Conta();
+        $this->assertEquals(true, $conta->setCancelada(false));
+    }
+
 	/**
 	* @depends testsetCancelada
+	* @depends testsetCancelada2
+	* @depends testsetCancelada3
+	* @depends testsetCancelada4
+	* @depends testsetCancelada5
 	*/
 	public function testgetCancelada(){
 		$conta = new Conta();
+		$conta->setCancelada('f');
+		$this->assertEquals(null, $conta->getCancelada());
+	}
+
+	/**
+	* @depends testsetCancelada
+	* @depends testsetCancelada2
+	* @depends testsetCancelada3
+	* @depends testsetCancelada4
+	* @depends testsetCancelada5
+	*/
+	public function testgetCancelada2(){
+		$conta = new Conta();
 		$conta->setCancelada(false);
-		$this->assertInternalType(bool, $conta->getCancelada());
+		$this->assertInternalType('bool', $conta->getCancelada());
+	}
+
+	/**
+	* @depends testsetCancelada
+	* @depends testsetCancelada2
+	* @depends testsetCancelada3
+	* @depends testsetCancelada4
+	* @depends testsetCancelada5
+	*/
+	public function testgetCancelada3(){
+		$conta = new Conta();
+		$conta->setCancelada(true);
+		$this->assertInternalType('bool', $conta->getCancelada());
 	}
 
 	/**
 	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
 	*/
 	public function testRetirar(){
 
 		$conta = new Conta();
 		$conta->setSaldo(5);
-		$this->assertEquals(3.5, $conta->Retirar(1.5));
+		$this->assertEquals(true, $conta->Retirar(1.5));
 	}
 
 	/**
 	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
 	*/
 	public function testRetirar2(){
 
@@ -297,6 +384,12 @@ class ContaTest extends PHPUnit_Framework_TestCase
 
 	/**
 	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
 	*/
 	public function testRetirar3(){
 
@@ -307,16 +400,47 @@ class ContaTest extends PHPUnit_Framework_TestCase
 
 	/**
 	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
+	* @depends testRetirar
+	* @depends testgetSaldo
+	*/
+	public function testRetirar4(){
+
+		$conta = new Conta();
+		$conta->setSaldo(10);
+		$conta->Retirar(5);
+		$this->assertEquals(5, $conta->getSaldo());
+	}
+
+	/**
+	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
 	*/
 	public function testDepositar(){
 
 		$conta = new Conta();
 		$conta->setSaldo(45.2);
-		$this->assertEquals(60.2, $conta->Depositar(15));
+		$this->assertEquals(true, $conta->Depositar(15));
 	}
 
 	/**
 	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
 	*/
 	public function testDepositar2(){
 
@@ -324,4 +448,24 @@ class ContaTest extends PHPUnit_Framework_TestCase
 		$conta->setSaldo(3.9);
 		$this->assertEquals(false, $conta->Depositar(-4.2));
 	}
+
+	/**
+	* @depends testsetSaldo
+	* @depends testsetSaldo2
+	* @depends testsetSaldo3
+	* @depends testsetSaldo4
+	* @depends testsetSaldo5
+	* @depends testsetSaldo6
+	* @depends testsetSaldo7
+	* @depends testDepositar
+	* @depends testgetSaldo
+	*/
+	public function testDepositar3(){
+
+		$conta = new Conta();
+		$conta->setSaldo(3.9);
+		$conta->Depositar(2.1);
+		$this->assertEquals(6, $conta->getSaldo());
+	}
+
 }

@@ -82,7 +82,11 @@ class Conta
 	}
 
 	function setCancelada($cancelada){
-		return $this->Cancelada = $cancelada;
+		if( is_bool($cancelada) ){
+			$this->Cancelada = $cancelada;
+			return true;
+		}
+		return false;
 	}
 
 	function getCancelada(){
@@ -92,7 +96,8 @@ class Conta
 	function Retirar($quantia){
 
 		if(( $quantia > 0) && ( $quantia < $this->Saldo )){
-			return $this->Saldo -= $quantia;
+			$this->Saldo -= $quantia;
+			return true;
 		}
 
 		return false;
@@ -101,7 +106,8 @@ class Conta
 	function Depositar($quantia){
 
 		if( $quantia > 0 ){
-			return $this->Saldo += $quantia;
+			$this->Saldo += $quantia;
+			return true;
 		}
 
 		return false;
